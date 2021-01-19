@@ -31,8 +31,9 @@ variables:
 
 
 stages:
-- stage: Init
-  displayName: Terraform Init
+- stage: Provision Infra
+  displayName: Provistion Infrastructure
+  condition: (ne(variables['test'], 'destroy'))
 
   jobs:  
   - job: InitJob
@@ -83,6 +84,43 @@ stages:
         displayName: Terraform Apply Job
         inputs:
           command: 'apply'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
+          environmentServiceName: 'mysubscription'
+          secureVarsFile: 'terraform.tfvars'
+          allowTelemetryCollection: false
+
+- stage: Destroy Infra
+  displayName: Destroy Infrastructure
+  condition: (eq(variables['test'], 'destroy'))
+
+  jobs:  
+  - job: InitJob
+    displayName: Terraform Init Job
+    pool:
+      vmImage: 'ubuntu-latest'
+
+    steps:
+      - script: |
+          echo "Checking the parameter variable"
+          echo The variable Value: $(test)
+
+      - task: TerraformCLI@0
+        displayName: Terraform Init Job
+        inputs:
+          command: 'init'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
+          backendType: 'azurerm'
+          backendServiceArm: 'mysubscription'
+          backendAzureRmResourceGroupName: 'RG_iqbal_tests'
+          backendAzureRmStorageAccountName: 'iquzartinfra'
+          backendAzureRmContainerName: 'terraform-state'
+          backendAzureRmKey: 'tstate-az-devops.state'
+          allowTelemetryCollection: false
+
+      - task: TerraformCLI@0
+        displayName: Terraform Destroy Job
+        inputs:
+          command: 'destroy'
           workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
           environmentServiceName: 'mysubscription'
           secureVarsFile: 'terraform.tfvars'
