@@ -62,7 +62,7 @@ stages:
 - stage: Provision
   displayName: Provistion Infrastructure
   dependsOn: Validation
-  condition: and(succeeded(), ne(variables['test'], 'destroy'))
+  condition: and(succeeded(), ne(variables['action'], 'destroy'))
 
   jobs:  
   - job: Provision
@@ -71,10 +71,6 @@ stages:
       vmImage: 'ubuntu-latest'
 
     steps:
-      - script: |
-          echo "Checking the parameter variable"
-          echo The variable Value: $(test)
-
       #- task: TerraformInstaller@0
       #  displayName: Install Terraform
       #  inputs:
@@ -115,7 +111,7 @@ stages:
 - stage: Destroy
   displayName: Destroy Infrastructure
   dependsOn: Validation
-  condition: and(succeeded(), eq(variables['test'], 'destroy'))
+  condition: and(succeeded(), eq(variables['action'], 'destroy'))
 
   jobs:  
   - job: Destroy
@@ -124,10 +120,6 @@ stages:
       vmImage: 'ubuntu-latest'
 
     steps:
-      - script: |
-          echo "Checking the parameter variable"
-          echo The variable Value: $(test)
-
       - task: TerraformCLI@0
         displayName: Terraform Init
         inputs:
