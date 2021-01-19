@@ -31,14 +31,45 @@ variables:
 
 
 stages:
+- stage: Init
+  displayName: Terraform Init
 
-  - stage: Test
-    jobs:
-      - template: templates/test.yml
-        parameters:
-          vmImage: $(vmImageName)
+  jobs:  
+  - job: InitJob
+    displayName: Terraform Init Job
+    pool:
+      vmImage: 'ubuntu-latest'
 
-  - stage: Build
-    displayName: Build
-    jobs:
-
+    steps:
+      - task: TerraformInstaller@0
+        displayName: Install Terraform
+        inputs:
+          terraformVersion: 'latest'
+      
+      - task: TerraformCLI@0
+        inputs:
+          command: 'validate'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
+          secureVarsFile: 'terraform.tfvars'
+          allowTelemetryCollection: true
+      
+      - task: TerraformCLI@0
+        inputs:
+          command: 'init'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
+          secureVarsFile: 'terraform.tfvars'
+          backendType: 'azurerm'
+          backendServiceArm: 'mysubscription'
+          backendAzureRmResourceGroupName: 'RG_iqbal_tests'
+          backendAzureRmStorageAccountName: 'iquzartinfra'
+          backendAzureRmContainerName: 'terraform-state'
+          backendAzureRmKey: 'tstate-az-devops.state'
+          allowTelemetryCollection: false
+      
+      - task: TerraformCLI@0
+        inputs:
+          command: 'plan'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
+          environmentServiceName: 'mysubscription'
+          secureVarsFile: 'terraform.tfvars'
+          allowTelemetryCollection: false
