@@ -6,7 +6,7 @@
 #
 #
 
-
+#trigger: none
 trigger:
   batch: true
   branches:
@@ -29,8 +29,8 @@ variables:
 - name: vmImageName
   value: 'ubuntu-latest'
 
-- name: stat
-  value: ''
+#- name: stat
+#  value: ''
 
 
 stages:
@@ -46,7 +46,7 @@ stages:
     steps:
       - script: |
           echo "Checking the parameter variable"
-          echo $(stat)
+          echo The variable Value: $(stat)
 
       - task: TerraformInstaller@0
         displayName: Install Terraform
