@@ -29,9 +29,6 @@ variables:
 - name: vmImageName
   value: 'ubuntu-latest'
 
-- name: test
-#  value: ''
-
 
 stages:
 - stage: Init
