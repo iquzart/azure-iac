@@ -48,13 +48,6 @@ stages:
       
       - task: TerraformCLI@0
         inputs:
-          command: 'validate'
-          workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
-          secureVarsFile: 'terraform.tfvars'
-          allowTelemetryCollection: true
-      
-      - task: TerraformCLI@0
-        inputs:
           command: 'init'
           workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
           secureVarsFile: 'terraform.tfvars'
@@ -65,6 +58,13 @@ stages:
           backendAzureRmContainerName: 'terraform-state'
           backendAzureRmKey: 'tstate-az-devops.state'
           allowTelemetryCollection: false
+      
+      - task: TerraformCLI@0
+        inputs:
+          command: 'validate'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
+          secureVarsFile: 'terraform.tfvars'
+          allowTelemetryCollection: true
       
       - task: TerraformCLI@0
         inputs:
