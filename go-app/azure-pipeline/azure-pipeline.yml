@@ -47,6 +47,7 @@ stages:
           terraformVersion: 'latest'
       
       - task: TerraformCLI@0
+        displayName: Terraform Init Job
         inputs:
           command: 'init'
           workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
@@ -66,8 +67,18 @@ stages:
       #    allowTelemetryCollection: true
       
       - task: TerraformCLI@0
+        displayName: Terraform Plan Job
         inputs:
           command: 'plan'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
+          environmentServiceName: 'mysubscription'
+          secureVarsFile: 'terraform.tfvars'
+          allowTelemetryCollection: false
+
+      - task: TerraformCLI@0
+        displayName: Terraform Apply Job
+        inputs:
+          command: 'apply'
           workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
           environmentServiceName: 'mysubscription'
           secureVarsFile: 'terraform.tfvars'
