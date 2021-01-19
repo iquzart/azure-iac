@@ -31,7 +31,7 @@ variables:
 
 
 stages:
-- stage: Provision Infra
+- stage: Provision
   displayName: Provistion Infrastructure
   condition: ne(variables['test'], 'destroy')
 
@@ -89,7 +89,7 @@ stages:
           secureVarsFile: 'terraform.tfvars'
           allowTelemetryCollection: false
 
-- stage: Destroy Infra
+- stage: Destroy
   displayName: Destroy Infrastructure
   condition: eq(variables['test'], 'destroy')
 
