@@ -6,18 +6,19 @@
 #
 #
 
-#trigger: none
-trigger:
-  batch: true
-  branches:
-    include:
-      - master
-      - development
-  paths:
-    exclude:
-      - README.md
-      - LICENSE
-      - .gitignore
+trigger: none
+
+#trigger:
+#  batch: true
+#  branches:
+#    include:
+#      - master
+#      - development
+#  paths:
+#    exclude:
+#      - README.md
+#      - LICENSE
+#      - .gitignore
 
 # Don't run against PRs
 pr: none
@@ -25,27 +26,18 @@ pr: none
 variables:
 - group: terraform-vars
 
-# Agent VM image name
-- name: vmImageName
-  value: 'ubuntu-latest'
-
 
 stages:
-- stage: Provision
-  displayName: Provistion Infrastructure
-  condition: ne(variables['test'], 'destroy')
+- stage: Validation
+  displayName: Terraform config validation
 
   jobs:  
-  - job: InitJob
-    displayName: Terraform Init Job
+  - job: Validation
+    displayName: Terraform config validate
     pool:
-      vmImage: 'ubuntu-latest'
-
+      vmImage: 'ubuntu-latest' 
+    
     steps:
-      - script: |
-          echo "Checking the parameter variable"
-          echo The variable Value: $(test)
-
       - task: TerraformInstaller@0
         displayName: Install Terraform
         inputs:
@@ -56,6 +48,43 @@ stages:
         inputs:
           command: 'init'
           workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
+          commandOptions: '-backend=false'
+          allowTelemetryCollection: false    
+      
+      - task: TerraformCLI@0
+        displayName: Validate
+        inputs:
+          command: 'validate'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
+          allowTelemetryCollection: true
+
+      
+- stage: Provision
+  displayName: Provistion Infrastructure
+  dependsOn: Validation
+  condition: and(succeeded(), ne(variables['test'], 'destroy'))
+
+  jobs:  
+  - job: Provision
+    displayName: Provistion Infrastructure
+    pool:
+      vmImage: 'ubuntu-latest'
+
+    steps:
+      - script: |
+          echo "Checking the parameter variable"
+          echo The variable Value: $(test)
+
+      #- task: TerraformInstaller@0
+      #  displayName: Install Terraform
+      #  inputs:
+      #    terraformVersion: 'latest'
+      
+      - task: TerraformCLI@0
+        displayName: Terraform init with backend
+        inputs:
+          command: 'init'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
           backendType: 'azurerm'
           backendServiceArm: 'mysubscription'
           backendAzureRmResourceGroupName: 'RG_iqbal_tests'
@@ -64,15 +93,9 @@ stages:
           backendAzureRmKey: 'tstate-az-devops.state'
           allowTelemetryCollection: false
       
+     
       - task: TerraformCLI@0
-        inputs:
-          command: 'validate'
-          workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
-          secureVarsFile: 'terraform.tfvars'
-          allowTelemetryCollection: true
-      
-      - task: TerraformCLI@0
-        displayName: Terraform Plan Job
+        displayName: Terraform Plan
         inputs:
           command: 'plan'
           workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
@@ -81,7 +104,7 @@ stages:
           allowTelemetryCollection: false
 
       - task: TerraformCLI@0
-        displayName: Terraform Apply Job
+        displayName: Terraform Apply
         inputs:
           command: 'apply'
           workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
@@ -91,11 +114,12 @@ stages:
 
 - stage: Destroy
   displayName: Destroy Infrastructure
-  condition: eq(variables['test'], 'destroy')
+  dependsOn: Validation
+  condition: and(succeeded(), eq(variables['test'], 'destroy'))
 
   jobs:  
-  - job: InitJob
-    displayName: Terraform Init Job
+  - job: Destroy
+    displayName: Destroy Infrastructure
     pool:
       vmImage: 'ubuntu-latest'
 
@@ -105,7 +129,7 @@ stages:
           echo The variable Value: $(test)
 
       - task: TerraformCLI@0
-        displayName: Terraform Init Job
+        displayName: Terraform Init
         inputs:
           command: 'init'
           workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
@@ -118,7 +142,7 @@ stages:
           allowTelemetryCollection: false
 
       - task: TerraformCLI@0
-        displayName: Terraform Destroy Job
+        displayName: Terraform Destroy
         inputs:
           command: 'destroy'
           workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
