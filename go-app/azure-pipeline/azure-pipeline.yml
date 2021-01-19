@@ -50,7 +50,6 @@ stages:
         inputs:
           command: 'init'
           workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
-          secureVarsFile: 'terraform.tfvars'
           backendType: 'azurerm'
           backendServiceArm: 'mysubscription'
           backendAzureRmResourceGroupName: 'RG_iqbal_tests'
@@ -59,12 +58,12 @@ stages:
           backendAzureRmKey: 'tstate-az-devops.state'
           allowTelemetryCollection: false
       
-      - task: TerraformCLI@0
-        inputs:
-          command: 'validate'
-          workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
-          secureVarsFile: 'terraform.tfvars'
-          allowTelemetryCollection: true
+      #- task: TerraformCLI@0
+      #  inputs:
+      ##    command: 'validate'
+      #    workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
+      #    secureVarsFile: 'terraform.tfvars'
+      #    allowTelemetryCollection: true
       
       - task: TerraformCLI@0
         inputs:
