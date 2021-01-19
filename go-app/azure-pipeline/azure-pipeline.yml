@@ -60,13 +60,13 @@ stages:
 
       
 - stage: Provision
-  displayName: Provistion Infrastructure
+  displayName: Provision Infrastructure
   dependsOn: Validation
   condition: and(succeeded(), ne(variables['action'], 'destroy'))
 
   jobs:  
   - job: Provision
-    displayName: Provistion Infrastructure
+    displayName: Provision Infrastructure
     pool:
       vmImage: 'ubuntu-latest'
 
