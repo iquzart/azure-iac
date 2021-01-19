@@ -39,12 +39,12 @@ stages:
     
     steps:
       - task: TerraformInstaller@0
-        displayName: Install Terraform
+        displayName: Install
         inputs:
           terraformVersion: 'latest'
       
       - task: TerraformCLI@0
-        displayName: Terraform Init Job
+        displayName: Init
         inputs:
           command: 'init'
           workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
@@ -71,13 +71,13 @@ stages:
       vmImage: 'ubuntu-latest'
 
     steps:
-      #- task: TerraformInstaller@0
-      #  displayName: Install Terraform
-      #  inputs:
-      #    terraformVersion: 'latest'
+      - task: TerraformInstaller@0
+        displayName: Install 
+        inputs:
+          terraformVersion: 'latest'
       
       - task: TerraformCLI@0
-        displayName: Terraform init with backend
+        displayName: Init
         inputs:
           command: 'init'
           workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
@@ -91,7 +91,7 @@ stages:
       
      
       - task: TerraformCLI@0
-        displayName: Terraform Plan
+        displayName: Plan
         inputs:
           command: 'plan'
           workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
@@ -100,7 +100,7 @@ stages:
           allowTelemetryCollection: false
 
       - task: TerraformCLI@0
-        displayName: Terraform Apply
+        displayName: Apply
         inputs:
           command: 'apply'
           workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
@@ -120,8 +120,13 @@ stages:
       vmImage: 'ubuntu-latest'
 
     steps:
+      - task: TerraformInstaller@0
+        displayName: Install 
+        inputs:
+          terraformVersion: 'latest'
+
       - task: TerraformCLI@0
-        displayName: Terraform Init
+        displayName: Init
         inputs:
           command: 'init'
           workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
@@ -134,7 +139,7 @@ stages:
           allowTelemetryCollection: false
 
       - task: TerraformCLI@0
-        displayName: Terraform Destroy
+        displayName: Destroy
         inputs:
           command: 'destroy'
           workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
