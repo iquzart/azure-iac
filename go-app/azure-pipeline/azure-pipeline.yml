@@ -29,7 +29,7 @@ variables:
 - name: vmImageName
   value: 'ubuntu-latest'
 
-#- name: stat
+- name: test
 #  value: ''
 
 
@@ -46,7 +46,7 @@ stages:
     steps:
       - script: |
           echo "Checking the parameter variable"
-          echo The variable Value: $(stat)
+          echo The variable Value: $(test)
 
       - task: TerraformInstaller@0
         displayName: Install Terraform
