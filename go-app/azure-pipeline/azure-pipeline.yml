@@ -33,7 +33,7 @@ variables:
 stages:
 - stage: Provision Infra
   displayName: Provistion Infrastructure
-  condition: (ne(variables['test'], 'destroy'))
+  condition: ne(variables['test'], 'destroy')
 
   jobs:  
   - job: InitJob
@@ -91,7 +91,7 @@ stages:
 
 - stage: Destroy Infra
   displayName: Destroy Infrastructure
-  condition: (eq(variables['test'], 'destroy'))
+  condition: eq(variables['test'], 'destroy')
 
   jobs:  
   - job: InitJob
