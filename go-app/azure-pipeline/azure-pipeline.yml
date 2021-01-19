@@ -29,6 +29,9 @@ variables:
 - name: vmImageName
   value: 'ubuntu-latest'
 
+- name: stat
+  value: ''
+
 
 stages:
 - stage: Init
@@ -41,6 +44,10 @@ stages:
       vmImage: 'ubuntu-latest'
 
     steps:
+      - script: |
+          echo "Checking the parameter variable"
+          echo $(stat)
+
       - task: TerraformInstaller@0
         displayName: Install Terraform
         inputs:
