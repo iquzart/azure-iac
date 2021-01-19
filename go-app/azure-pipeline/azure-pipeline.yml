@@ -64,12 +64,12 @@ stages:
           backendAzureRmKey: 'tstate-az-devops.state'
           allowTelemetryCollection: false
       
-      #- task: TerraformCLI@0
-      #  inputs:
-      ##    command: 'validate'
-      #    workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
-      #    secureVarsFile: 'terraform.tfvars'
-      #    allowTelemetryCollection: true
+      - task: TerraformCLI@0
+        inputs:
+          command: 'validate'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
+          secureVarsFile: 'terraform.tfvars'
+          allowTelemetryCollection: true
       
       - task: TerraformCLI@0
         displayName: Terraform Plan Job
