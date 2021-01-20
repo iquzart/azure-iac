@@ -23,6 +23,20 @@ trigger: none
 # Don't run against PRs
 pr: none
 
+parameters:
+- name: resource_ttl
+  displayName: Resources Expiry Time
+  type: string
+  default: "1 hours"
+  values:
+  - "1 hours"
+  - "4 hours"
+  - "8 hours"
+  - "1 day"
+  - "2 days"
+  - "7 days"
+
+
 variables:
 - group: terraform-vars
 
@@ -38,6 +52,14 @@ stages:
       vmImage: 'ubuntu-latest' 
     
     steps:
+      - script: |
+          echo "Parameter Value is ${{ parameters.resource_ttl }}"
+          echo "Expiry time calculation"
+          echo "======================="
+          now=$(date)
+          expiry_date=$(date "+%F-%H-%M-%S" --date=${{ parameters.resource_ttl }})
+          echo "final date"
+          echo $expiry_date
       - task: TerraformInstaller@0
         displayName: Install
         inputs:
@@ -62,7 +84,8 @@ stages:
 - stage: Provision
   displayName: Provision Infrastructure
   dependsOn: Validation
-  condition: and(succeeded(), ne(variables['action'], 'destroy'))
+  #condition: and(succeeded(), ne(variables['action'], 'destroy'))
+  condition: and(succeeded(), eq(variables['action'], 'destroy'))
 
   jobs:  
   - job: Provision
