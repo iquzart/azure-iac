@@ -16,7 +16,7 @@ variable "plan_settings" {
   }
 }
 
-variable "tags" {
+variable "app_tags" {
   description = "A mapping of tags to assign to the resource"
   type        = map(string)
   default = {
@@ -74,4 +74,15 @@ variable "container_image_registry" {
   type        = string
   default     = "https://index.docker.io"
 }
+
+variable "ttl" {
+  type = string
+  default = "20210119161133"
+}
+
+variable "pipeline_id" {
+  type = string
+  default = 1
+}
+
 

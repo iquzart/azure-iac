@@ -9,6 +9,7 @@ provider "azurerm" {
   tenant_id       = var.azure-tenant-id
 }
 
+
 terraform {
   backend "azurerm" {
   }
