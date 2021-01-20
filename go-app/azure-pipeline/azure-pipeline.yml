@@ -58,7 +58,7 @@ stages:
           echo "======================="
           ttl='${{ parameters.resource_ttl }}'
           echo "TTL from parameter var: $ttl"
-          expiry_date=$(date "+%F-%H-%M-%S" --date='${{ parameters.resource_ttl }}')
+          expiry_date=$(date "+%F-%H-%M-%S" --date=$ttl)
           echo "final date"
           echo $expiry_date
       - task: TerraformInstaller@0
