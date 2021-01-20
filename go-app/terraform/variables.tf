@@ -79,10 +79,12 @@ variable "app_tags" {
 # IAC Tags
 variable "expiry_date" {
   type = string
+  default = ""
 }
 
 variable "pipeline_id" {
   type = string
+  default = ""
 }
 
 
