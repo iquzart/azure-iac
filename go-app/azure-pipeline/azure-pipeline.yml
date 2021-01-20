@@ -128,15 +128,15 @@ stages:
           secureVarsFile: 'terraform.tfvars'
           allowTelemetryCollection: false
 
-#      - task: TerraformCLI@0
-#        displayName: Apply
-#        inputs:
-#          command: 'apply'
-#          workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
-#          environmentServiceName: 'mysubscription'
-#          commandOptions: '-var "ExpiryDate=$(expiry_date)"'          
-#          secureVarsFile: 'terraform.tfvars'
-#          allowTelemetryCollection: false
+      - task: TerraformCLI@0
+        displayName: Apply
+        inputs:
+          command: 'apply'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
+          environmentServiceName: 'mysubscription'
+          commandOptions: '-var "expiry_date=$(expiry_date)" -var "pipeline_id=1"'          
+          secureVarsFile: 'terraform.tfvars'
+          allowTelemetryCollection: false
 
 - stage: Destroy
   displayName: Destroy Infrastructure
