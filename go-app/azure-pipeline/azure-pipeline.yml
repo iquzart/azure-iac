@@ -57,7 +57,7 @@ stages:
           echo "Expiry time calculation"
           echo "======================="
           now=$(date)
-          expiry_date=$(date "+%F-%H-%M-%S" --date=${{ parameters.resource_ttl }})
+          expiry_date=$(date "+%F-%H-%M-%S" --date="${{ parameters.resource_ttl }}")
           echo "final date"
           echo $expiry_date
       - task: TerraformInstaller@0
