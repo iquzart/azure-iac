@@ -60,6 +60,7 @@ stages:
             ttl=${{ parameters.resource_ttl }}
             echo "TTL Value from parameter: $ttl"
             expireOn=`(date '+%d/%m/%Y %H:%M:%S' --date=$ttl)` 
+            echo "print expireOn: $expireOn"
             echo "##vso[task.setvariable variable=expiry_time]$expireOn"
 
       - script: |
