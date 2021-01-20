@@ -59,8 +59,10 @@ stages:
           script: |
             ttl=${{ parameters.resource_ttl }}
             expiry_time=$(date '+%d/%m/%Y %H:%M:%S' --date=$ttl) 
+            echo $expiry_time
             echo "##vso[task.setvariable variable=expiry_time;]$expiry_time"
 
+      - script: |
             echo "expiry Time variable"
             echo $(expiry_time)
 
