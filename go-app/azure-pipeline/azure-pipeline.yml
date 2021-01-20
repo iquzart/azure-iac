@@ -27,14 +27,14 @@ parameters:
 - name: resource_ttl
   displayName: Resources Expiry Time
   type: string
-  default: "1 hours"
+  default: "1hour"
   values:
-  - "1 hours"
-  - "4 hours"
-  - "8 hours"
-  - "1 day"
-  - "2 days"
-  - "7 days"
+  - "1hour"
+  - "4hours"
+  - "8hours"
+  - "1day"
+  - "2days"
+  - "7days"
 
 
 variables:
@@ -57,7 +57,7 @@ stages:
           echo "Expiry time calculation"
           echo "======================="
           now=$(date)
-          expiry_date=$(date "+%F-%H-%M-%S" --date='${{ parameters.resource_ttl }}')
+          expiry_date=$(date "+%F-%H-%M-%S" --date=${{ parameters.resource_ttl }})
           echo "final date"
           echo $expiry_date
       - task: TerraformInstaller@0
