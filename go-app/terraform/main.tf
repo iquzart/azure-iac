@@ -3,8 +3,8 @@
 # Set IAC Tags 
 locals {
   iac_tags = {
-    ttl = var.ExpiryDate
-    pipeline_id = var.PipelineID
+    ExpiryDate = var.expiry_date
+    PipelineID = var.pipeline_id
   }
 
 }

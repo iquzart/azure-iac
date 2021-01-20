@@ -16,15 +16,6 @@ variable "plan_settings" {
   }
 }
 
-variable "app_tags" {
-  description = "A mapping of tags to assign to the resource"
-  type        = map(string)
-  default = {
-    "Environment" = "Development"
-    "BU"          = "Information Technology"
-  }
-}
-
 # Azure App service Plan
 
 variable "resource_group_name" {
@@ -75,6 +66,17 @@ variable "container_image_registry" {
   default     = "https://index.docker.io"
 }
 
+# Tags
+variable "app_tags" {
+  description = "A mapping of tags to assign to the resource"
+  type        = map(string)
+  default = {
+    "Environment" = "Development"
+    "BU"          = "Information Technology"
+  }
+}
+
+# IAC Tags
 variable "expiry_date" {
   type = string
   default = ""
