@@ -27,14 +27,14 @@ parameters:
 - name: resource_ttl
   displayName: Resources Expiry Time
   type: string
-  default: "1hour"
+  default: 1hour
   values:
-  - "1hour"
-  - "4hours"
-  - "8hours"
-  - "1day"
-  - "2days"
-  - "7days"
+  - 1hour
+  - 4hours
+  - 8hours
+  - 1day
+  - 2days
+  - 7days
 
 
 variables:
@@ -59,7 +59,7 @@ stages:
           script: |
             ttl=${{ parameters.resource_ttl }}
             echo "TTL Value from parameter: $ttl"
-            expireOn=`$(date '+%d/%m/%Y %H:%M:%S' --date=$ttl)` && \
+            expireOn=`(date '+%d/%m/%Y %H:%M:%S' --date=$ttl)` 
             echo "##vso[task.setvariable variable=expiry_time]$expireOn"
 
       - script: |
