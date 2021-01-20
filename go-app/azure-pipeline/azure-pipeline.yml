@@ -114,7 +114,7 @@ stages:
           backendAzureRmResourceGroupName: 'RG_iqbal_tests'
           backendAzureRmStorageAccountName: 'iquzartinfra'
           backendAzureRmContainerName: 'terraform-state'
-          backendAzureRmKey: 'tstate-az-devops.state'
+          backendAzureRmKey: 'tstate-az-devops1.state'
           allowTelemetryCollection: false
       
      
@@ -165,7 +165,7 @@ stages:
           backendAzureRmResourceGroupName: 'RG_iqbal_tests'
           backendAzureRmStorageAccountName: 'iquzartinfra'
           backendAzureRmContainerName: 'terraform-state'
-          backendAzureRmKey: 'tstate-az-devops.state'
+          backendAzureRmKey: 'tstate-az-devops1.state'
           allowTelemetryCollection: false
 
       - task: TerraformCLI@0
