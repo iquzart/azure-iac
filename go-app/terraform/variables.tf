@@ -75,14 +75,14 @@ variable "container_image_registry" {
   default     = "https://index.docker.io"
 }
 
-variable "ttl" {
+variable "expiry_date" {
   type = string
-  default = "20210119161133"
+  default = ""
 }
 
 variable "pipeline_id" {
   type = string
-  default = 1
+  default = ""
 }
 
 

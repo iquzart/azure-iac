@@ -57,17 +57,14 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
-            echo "Current Time on the system"
-            date
             ttl=${{ parameters.resource_ttl }}
-            echo "TTL Value from parameter: $ttl"
-            expireOn=`TZ='Asia/Dubai' date '+%d/%m/%Y %H:%M:%S' --date=$ttl` 
-            echo "print expireOn: $expireOn"
-            echo "##vso[task.setvariable variable=expiry_time]$expireOn"
+            expiry_date=`TZ='Asia/Dubai' date '+%d/%m/%Y %H:%M:%S' --date=$ttl` 
+            #echo "print expiry_date: $expiry_date"
+            echo "##vso[task.setvariable variable=expiry_date]$expiry_date"
 
       - script: |
-            echo "expiry Time variable"
-            echo $(expiry_time)
+            echo "expiry date variable"
+            echo $(expiry_date)
 
       - task: TerraformInstaller@0
         displayName: Install
