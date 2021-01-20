@@ -52,20 +52,6 @@ stages:
       vmImage: 'ubuntu-latest' 
     
     steps:
-      - task: Bash@3
-        displayName: Set TTL Variable
-        inputs:
-          targetType: 'inline'
-          script: |
-            ttl=${{ parameters.resource_ttl }}
-            expiry_date=`TZ='Asia/Dubai' date '+%d/%m/%Y %H:%M:%S' --date=$ttl` 
-            #echo "print expiry_date: $expiry_date"
-            echo "##vso[task.setvariable variable=expiry_date]$expiry_date"
-
-      - script: |
-            echo "expiry date variable"
-            echo $(expiry_date)
-
       - task: TerraformInstaller@0
         displayName: Install
         inputs:
@@ -90,8 +76,7 @@ stages:
 - stage: Provision
   displayName: Provision Infrastructure
   dependsOn: Validation
-  #condition: and(succeeded(), ne(variables['action'], 'destroy'))
-  condition: and(succeeded(), eq(variables['action'], 'destroy'))
+  condition: and(succeeded(), ne(variables['action'], 'destroy'))
 
   jobs:  
   - job: Provision
@@ -100,6 +85,20 @@ stages:
       vmImage: 'ubuntu-latest'
 
     steps:
+      - task: Bash@3
+        displayName: Set TTL Variable
+        inputs:
+          targetType: 'inline'
+          script: |
+            ttl=${{ parameters.resource_ttl }}
+            expiry_date=`TZ='Asia/Dubai' date '+%d/%m/%Y %H:%M:%S' --date=$ttl` 
+            #echo "print expiry_date: $expiry_date"
+            echo "##vso[task.setvariable variable=expiry_date]$expiry_date"
+
+      - script: |
+            echo "expiry date variable"
+            echo $(expiry_date)
+
       - task: TerraformInstaller@0
         displayName: Install 
         inputs:
@@ -125,17 +124,19 @@ stages:
           command: 'plan'
           workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
           environmentServiceName: 'mysubscription'
+          commandOptions: '-var "ExpiryDate=$(expiry_date)"'
           secureVarsFile: 'terraform.tfvars'
           allowTelemetryCollection: false
 
-      - task: TerraformCLI@0
-        displayName: Apply
-        inputs:
-          command: 'apply'
-          workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
-          environmentServiceName: 'mysubscription'
-          secureVarsFile: 'terraform.tfvars'
-          allowTelemetryCollection: false
+#      - task: TerraformCLI@0
+#        displayName: Apply
+#        inputs:
+#          command: 'apply'
+#          workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
+#          environmentServiceName: 'mysubscription'
+#          commandOptions: '-var "ExpiryDate=$(expiry_date)"'          
+#          secureVarsFile: 'terraform.tfvars'
+#          allowTelemetryCollection: false
 
 - stage: Destroy
   displayName: Destroy Infrastructure
