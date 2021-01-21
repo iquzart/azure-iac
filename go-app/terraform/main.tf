@@ -11,8 +11,8 @@ locals {
 
 # Set Reource group from data
 data "azurerm_resource_group" "rg" {
-  name = "RG_iqbal_tests"
-
+  #name = "RG_iqbal_tests"
+   name = "RG_iqbal_func_test"
 }
 
 # Deploy App Service Plan
