@@ -21,12 +21,6 @@ variable "plan_settings" {
 
 # Azure App service Plan
 
-variable "resource_group_name" {
-  description = "App service resource group name"
-  type        = string
-  default     = ""
-}
-
 variable "location" {
   description = "App service location"
   type        = string
