@@ -27,19 +27,28 @@ parameters:
 - name: resource_ttl
   displayName: Resources Expiry Time
   type: string
-  default: 1hour
+  default: 1Hour
   values:
-  - 1hour
-  - 4hours
-  - 8hours
-  - 1day
-  - 2days
-  - 7days
+  - 5Minutes
+  - 1Hour
+  - 4Hours
+  - 8Hours
+  - 1Day
+  - 2Days
+  - 7Days
 
 
 variables:
-- group: terraform-vars
+- group: go-app-TFStateVars
 
+- name: vmImageName
+  value: 'ubuntu-latest'
+
+- name: armConnectionName
+  value: mysubscription
+
+- name: terraformVarFile
+  value: go-app.tfvars
 
 stages:
 - stage: Validation
@@ -49,7 +58,7 @@ stages:
   - job: Validation
     displayName: Terraform config validate
     pool:
-      vmImage: 'ubuntu-latest' 
+      vmImage: $(vmImageName)
     
     steps:
       - task: TerraformInstaller@0
@@ -82,7 +91,7 @@ stages:
   - job: Provision
     displayName: Provision Infrastructure
     pool:
-      vmImage: 'ubuntu-latest'
+      vmImage: $(vmImageName)
 
     steps:
       - task: Bash@3
@@ -110,11 +119,11 @@ stages:
           command: 'init'
           workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
           backendType: 'azurerm'
-          backendServiceArm: 'mysubscription'
-          backendAzureRmResourceGroupName: 'RG_iqbal_tests'
-          backendAzureRmStorageAccountName: 'iquzartinfra'
-          backendAzureRmContainerName: 'terraform-state'
-          backendAzureRmKey: 'tstate-az-devops1.state'
+          backendServiceArm: '$(armConnectionName)'
+          backendAzureRmResourceGroupName: '$(sa-rg-name)'
+          backendAzureRmStorageAccountName: '$(sa-name)'
+          backendAzureRmContainerName: '$(sa-container-name)'
+          backendAzureRmKey: '$(tf-state-file-name)'
           allowTelemetryCollection: false
       
      
@@ -123,9 +132,9 @@ stages:
         inputs:
           command: 'plan'
           workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
-          environmentServiceName: 'mysubscription'
+          environmentServiceName: '$(armConnectionName)'
           commandOptions: '-var "expiry_date=$(expiry_date)" -var "pipeline_id=1"'
-          secureVarsFile: 'terraform.tfvars'
+          secureVarsFile: '$(terraformVarFile)'
           allowTelemetryCollection: false
 
       - task: TerraformCLI@0
@@ -133,9 +142,9 @@ stages:
         inputs:
           command: 'apply'
           workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
-          environmentServiceName: 'mysubscription'
+          environmentServiceName: '$(armConnectionName)'
           commandOptions: '-var "expiry_date=$(expiry_date)" -var "pipeline_id=1"'          
-          secureVarsFile: 'terraform.tfvars'
+          secureVarsFile: '$(terraformVarFile)'
           allowTelemetryCollection: false
 
 - stage: Destroy
@@ -147,7 +156,7 @@ stages:
   - job: Destroy
     displayName: Destroy Infrastructure
     pool:
-      vmImage: 'ubuntu-latest'
+      vmImage: $(vmImageName)
 
     steps:
       - task: TerraformInstaller@0
@@ -161,11 +170,11 @@ stages:
           command: 'init'
           workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
           backendType: 'azurerm'
-          backendServiceArm: 'mysubscription'
-          backendAzureRmResourceGroupName: 'RG_iqbal_tests'
-          backendAzureRmStorageAccountName: 'iquzartinfra'
-          backendAzureRmContainerName: 'terraform-state'
-          backendAzureRmKey: 'tstate-az-devops1.state'
+          backendServiceArm: '$(armConnectionName)'
+          backendAzureRmResourceGroupName: '$(sa-rg-name)'
+          backendAzureRmStorageAccountName: '$(sa-name)'
+          backendAzureRmContainerName: '$(sa-container-name)'
+          backendAzureRmKey: '$(tf-state-file-name)'
           allowTelemetryCollection: false
 
       - task: TerraformCLI@0
@@ -173,6 +182,6 @@ stages:
         inputs:
           command: 'destroy'
           workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
-          environmentServiceName: 'mysubscription'
-          secureVarsFile: 'terraform.tfvars'
+          environmentServiceName: '$(armConnectionName)'
+          secureVarsFile: '$(terraformVarFile)'
           allowTelemetryCollection: false

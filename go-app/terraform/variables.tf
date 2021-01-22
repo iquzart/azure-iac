@@ -1,8 +1,11 @@
+variable "resource_group_name" {
+  description = "Resource Group Name"
+  type        = string
+}
 
 variable "appservice_plan_name" {
   description = "App service plan name"
   type        = string
-  default     = "App-plan-B1-Linux"
 }
 
 variable "plan_settings" {
