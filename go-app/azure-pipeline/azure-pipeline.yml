@@ -39,7 +39,7 @@ parameters:
 
 
 variables:
-- group: terraform-vars
+- group: go-app-TFStateVars
 
 - name: vmImageName
   value: 'ubuntu-latest'
