@@ -107,12 +107,6 @@ stages:
       - script: |
             echo "expiry date variable"
             echo $(expiry_date)
-            echo "DefinitionId"
-            echo $(Build.DefinitionName)
-            echo $(Build.DefinitionId)
-            echo "BuildId"
-            echo $(Build.BuildId)
-
 
       - task: TerraformInstaller@0
         displayName: Install 
@@ -139,7 +133,7 @@ stages:
           command: 'plan'
           workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
           environmentServiceName: '$(armConnectionName)'
-          commandOptions: '-var "expiry_date=$(expiry_date)" -var "pipeline_id=1"'
+          commandOptions: '-var "expiry_date=$(expiry_date)" -var "pipeline_id=$(DefinitionId)"'
           secureVarsFile: '$(terraformVarFile)'
           allowTelemetryCollection: false
 
@@ -149,7 +143,7 @@ stages:
           command: 'apply'
           workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
           environmentServiceName: '$(armConnectionName)'
-          commandOptions: '-var "expiry_date=$(expiry_date)" -var "pipeline_id=1"'          
+          commandOptions: '-var "expiry_date=$(expiry_date)" -var "pipeline_id=$(DefinitionId)"'          
           secureVarsFile: '$(terraformVarFile)'
           allowTelemetryCollection: false
 
