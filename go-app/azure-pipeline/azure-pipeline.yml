@@ -107,6 +107,9 @@ stages:
       - script: |
             echo "expiry date variable"
             echo $(expiry_date)
+            echo "DefinitionId"
+            echo $(Build.TriggeredBy.DefinitionId)
+
 
       - task: TerraformInstaller@0
         displayName: Install 
