@@ -48,7 +48,7 @@ module "appservice" {
 
 
   app_settings = { 
-    "BANNER"   = var.appbanner, 
+    "BANNER"   = var.app_banner, 
     "PORT"     = var.app_port 
     }
   

@@ -80,7 +80,7 @@ variable "app_settings" {
   default     = {}
 }
 
-variable "appbanner" {
+variable "app_banner" {
   type = string
   default = "App running created by Terraform"
   
