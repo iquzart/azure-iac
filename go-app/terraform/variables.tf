@@ -1,32 +1,42 @@
+# Global
 variable "resource_group_name" {
-  description = "Resource Group Name"
+  description = "(Required) The name of the resource group in which to create the App Service Plan component."
   type        = string
 }
 
+# IaC tags
+variable "expiry_date" {
+  description = "(Optional) Tag value"
+  type        =  string
+}
+
+variable "pipeline_id" {
+  description = "(Optional) Tag value"
+  type        =  string
+}
+
+# Azure App Service Plan Variables
 variable "appservice_plan_name" {
-  description = "App service plan name"
+  description = "(Required) Specifies the name of the App Service Plan component. Changing this forces a new resource to be created."
   type        = string
 }
 
-variable "plan_settings" {
-  type        = map(string)
-  description = "Definition of the dedicated plan to use"
+variable "kind" {
+  description = "(Optional) The kind of the App Service Plan to create. Possible values are Windows (also available as App), Linux, elastic (for Premium Consumption) and FunctionApp (for a Consumption Plan). Defaults to Windows. Changing this forces a new resource to be created"
+  type        = string
+}
 
-  default = {
-    kind = "Linux" # Linux or Windows
-    size = "B1"
-    tier = "Basic"
-  }
+variable "size" {
+  description = "(Required) Specifies the plan's instance size"
+  type        = string
+}
+
+variable "tier" {
+  description = "(Required) Specifies the plan's pricing tier"
+  type        = string
 }
 
 # Azure App service Plan
-
-variable "location" {
-  description = "App service location"
-  type        = string
-  default     = ""
-}
-
 variable "app_name" {
   description = "App service name"
   type        = string
@@ -63,25 +73,33 @@ variable "container_image_registry" {
   default     = "https://index.docker.io"
 }
 
-# Tags
-variable "app_tags" {
-  description = "A mapping of tags to assign to the resource"
+
+variable "app_settings" {
+  description = "(Optional) A key-value pair of App Settings"
   type        = map(string)
-  default = {
-    "Environment" = "Development"
-    "BU"          = "Information Technology"
-  }
+  default     = {}
 }
 
-# IAC Tags
-variable "expiry_date" {
+variable "app_banner" {
   type = string
-  default = ""
+  default = "App running created by Terraform"
+  
 }
 
-variable "pipeline_id" {
+variable "app_port" {
   type = string
-  default = ""
+  default = "8080"
+  
 }
 
+variable "site_config" {
+  description = "Site config for App Service."
+  type        = any
+  default     = {}
+}
 
+variable "connection_string" {
+  description = "Connection strings for App Service"
+  type        = list(map(string))
+  default     = []
+}
