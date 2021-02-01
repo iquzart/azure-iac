@@ -39,7 +39,7 @@ parameters:
 
 
 variables:
-- group: go-app-TFStateVars
+- group: go-app-TFVARS
 
 - name: vmImageName
   value: 'ubuntu-latest'
@@ -120,9 +120,9 @@ stages:
           workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
           backendType: 'azurerm'
           backendServiceArm: '$(armConnectionName)'
-          backendAzureRmResourceGroupName: '$(sa-rg-name)'
-          backendAzureRmStorageAccountName: '$(sa-name)'
-          backendAzureRmContainerName: '$(sa-container-name)'
+          backendAzureRmResourceGroupName: '$(backend-sa-rg-name)'
+          backendAzureRmStorageAccountName: '$(backend-sa-name)'
+          backendAzureRmContainerName: '$(backend-sa-container-name)'
           backendAzureRmKey: '$(tf-state-file-name)'
           allowTelemetryCollection: false
       
@@ -133,7 +133,7 @@ stages:
           command: 'plan'
           workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
           environmentServiceName: '$(armConnectionName)'
-          commandOptions: '-var "expiry_date=$(expiry_date)" -var "pipeline_id=$(DefinitionId)"'
+          commandOptions: '-var "expiry_date=$(expiry_date)" -var "pipeline_id=$(pipeline_id)" -var "resource_group_name=$(resource_group_name)" -var "app_name=$(app_name)" -var "container_type=$(container_type)" -var "container_image=$(container_image)" -var "container_image_tag=$(container_image)" -var "container_image_registry=$(container_image_registry)" -var "appservice_plan_name=$(appservice_plan_name)" -var "appbanner=$(appbanner)" -var "$(port)" -var "kind=$(kind)" -var "tier=$(tier)" -var "size=$(size)"'
           secureVarsFile: '$(terraformVarFile)'
           allowTelemetryCollection: false
 
@@ -143,7 +143,7 @@ stages:
           command: 'apply'
           workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
           environmentServiceName: '$(armConnectionName)'
-          commandOptions: '-var "expiry_date=$(expiry_date)" -var "pipeline_id=$(DefinitionId)"'          
+          commandOptions: '-var "expiry_date=$(expiry_date)" -var "pipeline_id=$(pipeline_id)" -var "resource_group_name=$(resource_group_name)" -var "app_name=$(app_name)" -var "container_type=$(container_type)" -var "container_image=$(container_image)" -var "container_image_tag=$(container_image)" -var "container_image_registry=$(container_image_registry)" -var "appservice_plan_name=$(appservice_plan_name)" -var "appbanner=$(appbanner)" -var "$(port)" -var "kind=$(kind)" -var "tier=$(tier)" -var "size=$(size)"'
           secureVarsFile: '$(terraformVarFile)'
           allowTelemetryCollection: false
 
@@ -171,9 +171,9 @@ stages:
           workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
           backendType: 'azurerm'
           backendServiceArm: '$(armConnectionName)'
-          backendAzureRmResourceGroupName: '$(sa-rg-name)'
-          backendAzureRmStorageAccountName: '$(sa-name)'
-          backendAzureRmContainerName: '$(sa-container-name)'
+          backendAzureRmResourceGroupName: '$(backend-sa-rg-name)'
+          backendAzureRmStorageAccountName: '$(backend-sa-name)'
+          backendAzureRmContainerName: '$(backend-sa-container-name)'
           backendAzureRmKey: '$(tf-state-file-name)'
           allowTelemetryCollection: false
 
