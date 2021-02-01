@@ -1,7 +1,7 @@
 #
 # Azure DevOps pipeline
 #
-# Description     : DevInfra Auto remove Test
+# Description     : DevInfra Auto remove POC
 # Created by      : Muhammed Iqbal
 #
 #
@@ -48,7 +48,7 @@ variables:
   value: mysubscription
 
 - name: terraformVarFile
-  value: go-app.tfvars
+  value: auth.tfvars
 
 stages:
 - stage: Validation
