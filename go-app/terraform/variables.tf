@@ -2,6 +2,7 @@
 variable "resource_group_name" {
   description = "(Required) The name of the resource group in which to create the App Service Plan component."
   type        = string
+  default     = ""
 }
 
 # IaC tags
