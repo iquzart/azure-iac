@@ -183,6 +183,6 @@ stages:
           command: 'destroy'
           workingDirectory: '$(System.DefaultWorkingDirectory)/go-app/terraform'
           environmentServiceName: '$(armConnectionName)'
-          commandOptions: '-var "resource_group_name=$(resource_group_name)" -var "app_name=$(app_name)" -var "container_type=$(container_type)" -var "container_image=$(container_image)" -var "container_image_tag=$(container_image_tag)" -var "container_image_registry=$(container_image_registry)" -var "appservice_plan_name=$(appservice_plan_name)" -var "app_banner=$(app_banner)" -var "app_port=$(app_port)" -var "kind=$(kind)" -var "tier=$(tier)" -var "size=$(size)"'          
+#          commandOptions: '-var "resource_group_name=$(resource_group_name)" -var "app_name=$(app_name)" -var "container_type=$(container_type)" -var "container_image=$(container_image)" -var "container_image_tag=$(container_image_tag)" -var "container_image_registry=$(container_image_registry)" -var "appservice_plan_name=$(appservice_plan_name)" -var "app_banner=$(app_banner)" -var "app_port=$(app_port)" -var "kind=$(kind)" -var "tier=$(tier)" -var "size=$(size)"'          
           secureVarsFile: '$(terraformVarFile)'
           allowTelemetryCollection: false

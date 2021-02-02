@@ -8,32 +8,38 @@ variable "resource_group_name" {
 variable "expiry_date" {
   description = "(Optional) Tag value"
   type        =  string
+  default     = ""
 }
 
 variable "pipeline_id" {
   description = "(Optional) Tag value"
   type        =  string
+  default     = ""
 }
 
 # Azure App Service Plan Variables
 variable "appservice_plan_name" {
   description = "(Required) Specifies the name of the App Service Plan component. Changing this forces a new resource to be created."
   type        = string
+  default     = ""  
 }
 
 variable "kind" {
   description = "(Optional) The kind of the App Service Plan to create. Possible values are Windows (also available as App), Linux, elastic (for Premium Consumption) and FunctionApp (for a Consumption Plan). Defaults to Windows. Changing this forces a new resource to be created"
   type        = string
+  default     = ""  
 }
 
 variable "size" {
   description = "(Required) Specifies the plan's instance size"
   type        = string
+  default     = ""  
 }
 
 variable "tier" {
   description = "(Required) Specifies the plan's pricing tier"
   type        = string
+  default     = ""  
 }
 
 # Azure App service Plan
